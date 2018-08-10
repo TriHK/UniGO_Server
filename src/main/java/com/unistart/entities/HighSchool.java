@@ -21,6 +21,11 @@ public class HighSchool {
 	private Integer code;
 	private String name;
 	private Location location;
+
+    public HighSchool() {
+    }
+        
+        
 	public HighSchool(Integer id, Integer code, String name, Location location) {
 		super();
 		this.id = id;
