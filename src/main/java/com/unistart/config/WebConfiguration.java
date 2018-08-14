@@ -11,19 +11,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableWebMvc
 public class WebConfiguration extends WebMvcConfigurerAdapter {
-	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-	    final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-	    final ObjectMapper objectMapper = new ObjectMapper();
-	    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-	    objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-	    converter.setObjectMapper(objectMapper);
-	    converters.add(converter);
-	    super.configureMessageConverters(converters);
-	}
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        //enable JsonView
+        objectMapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
+        converter.setObjectMapper(objectMapper);
+        converters.add(converter);
+        super.configureMessageConverters(converters);
+    }
 }

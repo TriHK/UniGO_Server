@@ -34,7 +34,7 @@ import com.unistart.error.ErrorNotification;
 import com.unistart.services.MajorService;
 import com.unistart.services.interfaces.MajorServiceInterface;
 import com.unistart.services.interfaces.UniversityServiceInterface;
-import com.unistart.view.View;
+import com.unistart.view.UniversityView;
 
 @RestController
 @RequestMapping(UrlConstant.UNIVERSITY)
@@ -234,11 +234,10 @@ public class UniversityController {
         return new ResponseEntity<List<University>>(listUniversity, HttpStatus.OK);
     }
 
-//    @JsonView(View.SimpleView.class)
+    @JsonView(UniversityView.SimpleView.class)
     @RequestMapping(value = UrlConstant.GET_TOP_UNIVERSITY, method = RequestMethod.GET)
     public ResponseEntity<?> getTop10University() {
         listUniversity = universityService.getTop10University();
-        ObjectMapper om = new ObjectMapper();
         return new ResponseEntity<List<University>>(listUniversity, HttpStatus.OK);
     }
 

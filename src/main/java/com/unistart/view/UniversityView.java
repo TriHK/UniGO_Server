@@ -9,9 +9,9 @@ package com.unistart.view;
  *
  * @author ADMIN
  */
-public class View {
+public class UniversityView {
 
     public interface SimpleView {
-
     }
+    
 }
