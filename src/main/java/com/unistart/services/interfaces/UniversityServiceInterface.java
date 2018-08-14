@@ -37,5 +37,6 @@ public interface UniversityServiceInterface {
 	List<University> getUniByLocationMajor(int locationId, int majorId);
 	List<University> getUniByMajorId(int majorId);
 	List<University> getUniByLocationId(int locationId);
+	List<University> getTop10University();
 
 }

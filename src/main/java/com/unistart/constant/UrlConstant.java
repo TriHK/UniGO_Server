@@ -33,6 +33,8 @@ public class UrlConstant {
     public static final String GET_BY_LOCATION_AND_MAJOR = "/get-by-location-and-major";
     public static final String GET_BY_MAJOR_ID = "/get-by-major-id";
     public static final String GET_LOCATION_BY_ID = "/get-location-by-uni";
+    public static final String GET_TOP_UNIVERSITY = "/top10";
+    
     //BLOCK
     public static final String BLOCK = "/block";
     public static final String GET_ALL_BLOCK = "/get-all-block";

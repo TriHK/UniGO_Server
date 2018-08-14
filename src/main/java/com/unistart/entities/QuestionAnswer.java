@@ -39,7 +39,7 @@ public class QuestionAnswer implements java.io.Serializable {
 	private boolean isVoteByUser;
 	private boolean isReportByUser;
 	private int totalAnswer;
-	private int[] tagUniversity;
+	private int[] tagUniversity = new int[0];
 	
 	@JsonManagedReference
 	private Set<QuestionTag> tags = new HashSet<QuestionTag>(0);
