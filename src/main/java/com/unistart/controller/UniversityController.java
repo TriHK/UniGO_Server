@@ -29,7 +29,7 @@ import com.unistart.entities.Major;
 import com.unistart.entities.MajorUniversity;
 import com.unistart.entities.University;
 import com.unistart.entities.customentities.LocationMajor;
-import com.unistart.entities.customentities.SearchEntity;
+import com.unistart.entities.customentities.UniversitySearchEntity;
 import com.unistart.error.ErrorNotification;
 import com.unistart.services.MajorService;
 import com.unistart.services.interfaces.MajorServiceInterface;
@@ -78,14 +78,11 @@ public class UniversityController {
         return new ResponseEntity<ErrorNotification>(error, HttpStatus.CONFLICT);
     }
 
+    @JsonView(UniversityView.Simple.class)
     @RequestMapping(value = UrlConstant.SEARCH, method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<?> searchUniversity(@RequestBody SearchEntity searchEntity) {
-        int majorId = searchEntity.getMajorId();
-        int universityId = searchEntity.getUniversityId();
-        int locationId = searchEntity.getLocationId();
-
-        listUniversity = universityService.findUniversity(majorId, universityId, locationId);
+    public ResponseEntity<?> searchUniversity(@RequestBody UniversitySearchEntity searchEntity) {
+        listUniversity = universityService.findUniversity(searchEntity);
         return new ResponseEntity<List<University>>(listUniversity, HttpStatus.OK);
     }
 
@@ -234,7 +231,7 @@ public class UniversityController {
         return new ResponseEntity<List<University>>(listUniversity, HttpStatus.OK);
     }
 
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     @RequestMapping(value = UrlConstant.GET_TOP_UNIVERSITY, method = RequestMethod.GET)
     public ResponseEntity<?> getTop10University() {
         listUniversity = universityService.getTop10University();

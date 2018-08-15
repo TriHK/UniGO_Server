@@ -264,7 +264,7 @@ public class CorrelateService implements CorrelateServiceInterface{
 			System.out.println(listCorrelate.get(i).getUniversityId() + " " + listCorrelate.get(i).getNumberOfSameMajor());
 			Pearson pe = new Pearson();
 			UniversityPoint uniPoint = reviewService.getPointById(listCorrelate.get(i).getUniversityId());
-			University uni = uniRepo.findByUniId(listCorrelate.get(i).getUniversityId());
+			University uni = uniRepo.findActiveUniById(listCorrelate.get(i).getUniversityId());
 			double r = 0.0;
 			if(uniPoint == null){
 				if(listCorrelate.get(i).getNumberOfSameMajor()/10 > 1){
@@ -288,7 +288,7 @@ public class CorrelateService implements CorrelateServiceInterface{
 		return listPearson.subList(0, listCorrelate.size()>=5 ? 5 : listCorrelate.size());
 	}
 	public List<University> getListUniSameMajor(int majorId){
-		List<University> listUni = uniRepo.findByMajor(majorId);
+		List<University> listUni = uniRepo.findByMajor(majorId,null);
 		return listUni;	
 	}
 }

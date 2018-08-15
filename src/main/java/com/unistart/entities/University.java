@@ -29,25 +29,25 @@ import com.unistart.view.UniversityView;
 @Table(name = "University", schema = "dbo", catalog = "University")
 public class University implements java.io.Serializable {
 
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private Integer id;
     private Location location;
     private TrainSystem trainSystem;
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private String code;
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private String name;
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private String email;
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private String phone;
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private String logo;
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private String description;
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private String image;
-    @JsonView(UniversityView.SimpleView.class)
+    @JsonView(UniversityView.Simple.class)
     private Integer priority;
     private Boolean isActive;
     private Set<Review> reviews = new HashSet<Review>(0);

@@ -10,11 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unistart.entities.Location;
 import com.unistart.entities.TrainSystem;
 import com.unistart.entities.University;
+import com.unistart.entities.customentities.UniversitySearchEntity;
 import com.unistart.repositories.LocationRepository;
 import com.unistart.repositories.TrainRepository;
 import com.unistart.repositories.UniversityRepository;
 import com.unistart.services.interfaces.UniversityServiceInterface;
 import javax.persistence.EntityManager;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 @Transactional
@@ -60,7 +64,7 @@ public class UniversityService implements UniversityServiceInterface {
     @Override
     public University getUniversityById(int id) {
         // TODO Auto-generated method stub
-		return universityRepo.findById(id);
+        return universityRepo.findById(id);
     }
 
     @Override
@@ -76,40 +80,30 @@ public class UniversityService implements UniversityServiceInterface {
     }
 
     @Override
-    public List<University> findUniversity(int majorId, int universityId, int locationId) {
-        // TODO Auto-generated method stub
+    public List<University> findUniversity(UniversitySearchEntity search) {
+        Pageable pageable = new PageRequest(search.getPage(), search.getLimit(), Sort.Direction.ASC, "priority");
         List<University> listUniversity;
-        if (universityId == 0 && locationId == 0 && majorId != 0) {
-            listUniversity = universityRepo.findByMajor(majorId);
-        } else if (majorId == 0 && locationId == 0 && universityId != 0) {
-            university = universityRepo.findByUniId(universityId);
-            listUniversity = new ArrayList<University>();
-            listUniversity.add(university);
-        } else if (majorId == 0 && universityId == 0 && locationId != 0) {
-            listUniversity = universityRepo.findByLocation(locationId);
-        } else if (majorId != 0 && universityId == 0 && locationId != 0) {
-            listUniversity = universityRepo.findByLocationAndMajor(majorId, locationId);
-        } else if (majorId != 0 && universityId != 0 && locationId == 0) {
-            university = universityRepo.findByMajorAndUniversity(majorId, universityId);
-            listUniversity = new ArrayList<University>();
-            listUniversity.add(university);
-        } else if (majorId == 0 && universityId != 0 && locationId != 0) {
-            university = universityRepo.findByLocationAndId(locationId, universityId);
-            listUniversity = new ArrayList<University>();
-            listUniversity.add(university);
+        String name = "%" + search.getName() + "%";
+        if (search.getMajorId() == 0 && search.getLocationId() == 0) {
+            //find by name only
+            listUniversity = universityRepo.findActiveUniByName(name, pageable);
+        } else if (search.getMajorId() != 0 && search.getLocationId() == 0) {
+            //find by major and name
+            listUniversity = universityRepo.findByMajorAndName(search.getMajorId(), name, pageable);
+        } else if (search.getMajorId() == 0 && search.getLocationId() != 0) {
+            //find by location and name
+            listUniversity = universityRepo.findByLocationAndName(search.getLocationId(), name, pageable);
         } else {
-            university = universityRepo.findBy(majorId, universityId, locationId);
-            listUniversity = new ArrayList<University>();
-            listUniversity.add(university);
+            // find by name, location, major
+            listUniversity = universityRepo.findByCriterias(search.getMajorId(), name, search.getLocationId(), pageable);
         }
-
         return listUniversity;
     }
 
     @Override
     public List<University> findUniversityByMajorId(int majorId) {
         List<University> listUniversity;
-        listUniversity = universityRepo.findByMajor(majorId);
+        listUniversity = universityRepo.findByMajor(majorId, null);
         return listUniversity;
     }
 
@@ -133,7 +127,7 @@ public class UniversityService implements UniversityServiceInterface {
     @Override
     public boolean updateUniversity(int id, String code, String name, String email, String phone, String logo, String image, int priority,
             String description, int trainSystem) {
-		University university = universityRepo.findById(id);
+        University university = universityRepo.findById(id);
         if (university != null) {
             universityRepo.updateUniversity(code, name, email, phone, logo, image, priority, description, trainSystem, id);
             return true;
