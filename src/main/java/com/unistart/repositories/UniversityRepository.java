@@ -44,7 +44,7 @@ public interface UniversityRepository extends JpaRepository<University, Integer>
             + "where u.id = mu.university.id and m.id = mu.major.id and m.id = ?1 and u.isActive = true")
     List<University> findByMajor(int majorId, Pageable pageable);
 
-    @Query("select u from University u where u.name LIKE ?1 and u.isActive = true")
+    @Query("select DISTINCT u from University u where u.name LIKE ?1 and u.isActive = true")
     List<University> findActiveUniByName(String name, Pageable pageable);
     
     @Query("select new com.unistart.entities.University(u.id,u.name,u.logo,u.phone) from University u where u.id = ?1 and u.isActive = true")
@@ -55,18 +55,18 @@ public interface UniversityRepository extends JpaRepository<University, Integer>
             + "and u.location.id = ?2 and u.isActive = true")
     List<University> findByLocationAndMajor(int majorId, int locationId, Pageable pageable);
 
-    @Query("select u from University u, MajorUniversity mu, Major m "
-            + "where u.id = mu.university.id and m.id = mu.major.id and m.id = ?1 "
+    @Query("select DISTINCT u from University u, MajorUniversity mu, Major m "
+            + "where u.id = mu.university.id and m.id = mu.major.id and m.id in ?1 "
             + "and u.name LIKE ?2 and u.isActive = true")
-    List<University> findByMajorAndName(int majorId, String name, Pageable pageable);
+    List<University> findByMajorAndName(List<Integer> majorIds, String name, Pageable pageable);
 
-    @Query("select u from University u where u.location.id = ?1 and u.name LIKE ?2")
-    List<University> findByLocationAndName(int locationId, String name, Pageable pageable);
+    @Query("select DISTINCT u from University u where u.location.id in ?1 and u.name LIKE ?2")
+    List<University> findByLocationAndName(List<Integer> locationIds, String name, Pageable pageable);
 
-    @Query("select u from University u, MajorUniversity mu, Major m "
+    @Query("select DISTINCT u from University u, MajorUniversity mu, Major m "
             + "where u.id = mu.university.id and m.id = mu.major.id and "
-            + "u.isActive = 'true' and m.id = ?1 and u.name LIKE ?2 and u.location.id = ?3")
-    List<University> findByCriterias(int majorId, String name, int locationId, Pageable pageable);
+            + "u.isActive = 'true' and (m.id in ?1 and u.location.id in ?3) and u.name LIKE ?2 ")
+    List<University> findByCriterias(List<Integer> majorIds, String name, List<Integer> locationIds, Pageable pageable);
 
     @Query("select new com.unistart.entities.University(u.id) from University u where u.isActive = true")
     List<University> getListId();

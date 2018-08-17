@@ -1,6 +1,5 @@
 package com.unistart.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,18 +83,20 @@ public class UniversityService implements UniversityServiceInterface {
         Pageable pageable = new PageRequest(search.getPage(), search.getLimit(), Sort.Direction.ASC, "priority");
         List<University> listUniversity;
         String name = "%" + search.getName() + "%";
-        if (search.getMajorId() == 0 && search.getLocationId() == 0) {
+        boolean searchMajor = !search.getMajorIds().isEmpty();
+        boolean searchLocation = !search.getLocationIds().isEmpty();
+        if (!searchMajor && !searchLocation) {
             //find by name only
             listUniversity = universityRepo.findActiveUniByName(name, pageable);
-        } else if (search.getMajorId() != 0 && search.getLocationId() == 0) {
+        } else if (searchMajor && !searchLocation) {
             //find by major and name
-            listUniversity = universityRepo.findByMajorAndName(search.getMajorId(), name, pageable);
-        } else if (search.getMajorId() == 0 && search.getLocationId() != 0) {
+            listUniversity = universityRepo.findByMajorAndName(search.getMajorIds(), name, pageable);
+        } else if (!searchMajor && searchLocation) {
             //find by location and name
-            listUniversity = universityRepo.findByLocationAndName(search.getLocationId(), name, pageable);
+            listUniversity = universityRepo.findByLocationAndName(search.getLocationIds(), name, pageable);
         } else {
             // find by name, location, major
-            listUniversity = universityRepo.findByCriterias(search.getMajorId(), name, search.getLocationId(), pageable);
+            listUniversity = universityRepo.findByCriterias(search.getMajorIds(), name, search.getLocationIds(), pageable);
         }
         return listUniversity;
     }

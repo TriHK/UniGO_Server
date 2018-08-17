@@ -1,12 +1,14 @@
 package com.unistart.entities.customentities;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class UniversitySearchEntity implements Serializable {
 
     private String name = "";
-    private int majorId = 0;
-    private int locationId = 0;
+    private List<Integer> majorIds = new LinkedList<Integer>();
+    private List<Integer> locationIds = new LinkedList<Integer>();
     private int page = 0;
     private int limit = 0;
 
@@ -34,20 +36,20 @@ public class UniversitySearchEntity implements Serializable {
         this.name = name;
     }
 
-    public int getMajorId() {
-        return majorId;
+    public List<Integer> getMajorIds() {
+        return majorIds;
     }
 
-    public void setMajorId(int majorId) {
-        this.majorId = majorId;
+    public void setMajorIds(List<Integer> majorIds) {
+        this.majorIds = majorIds;
     }
 
-    public int getLocationId() {
-        return locationId;
+    public List<Integer> getLocationIds() {
+        return locationIds;
     }
 
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
+    public void setLocationIds(List<Integer> locationIds) {
+        this.locationIds = locationIds;
     }
 
 }
