@@ -96,7 +96,7 @@ public class Users implements java.io.Serializable {
 	}
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "RoleID", nullable = false)
 	public Role getRole() {
 		return this.role;

@@ -1,38 +1,58 @@
 package com.unistart.config;
 
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.unistart.config.auth.AuthenticationTokenFilter;
+import com.unistart.config.auth.CustomAccessDeniedHandler;
+import com.unistart.config.auth.RestAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.unistart.constant.AuthenticationConstants.getUnauthenticatedUrls;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	DataSource dataSource;
 
-	@Autowired
-	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
+    }
 
-		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder())
-				.usersByUsernameQuery("sql...").authoritiesByUsernameQuery("sql...");
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.httpBasic().and().csrf().disable();
+//        http.csrf().ignoringAntMatchers("/**");
+        //unauthenticated url
+        http.authorizeRequests().antMatchers(getUnauthenticatedUrls()).permitAll().and().logout().disable();
+        http.httpBasic().authenticationEntryPoint(restServicesEntryPoint())
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		return encoder;
-	}
+    @Bean
+    public RestAuthenticationEntryPoint restServicesEntryPoint() {
+        return new RestAuthenticationEntryPoint();
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();
-	}
+    @Bean
+    public CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
+    @Bean
+    public AuthenticationTokenFilter jwtAuthenticationTokenFilter() throws Exception {
+        AuthenticationTokenFilter jwtAuthenticationTokenFilter = new AuthenticationTokenFilter();
+        jwtAuthenticationTokenFilter.setAuthenticationManager(authenticationManager());
+        return jwtAuthenticationTokenFilter;
+    }
 }

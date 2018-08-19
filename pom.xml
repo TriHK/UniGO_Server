@@ -107,6 +107,25 @@
             <artifactId>mssql-jdbc</artifactId>
             <version>6.1.0.jre8</version>
         </dependency>
+        <!--Google api-->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.24.1</version>
+        </dependency>
+        <!-- JWT -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>4.20</version>
+        </dependency>
+        <!--Guava-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
