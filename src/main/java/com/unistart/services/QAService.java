@@ -94,29 +94,33 @@ public class QAService implements QAInterface {
     }
 
     @Override
-    public QuestionAnswer getQaById(int qaId, int userId) {
-        // TODO Auto-generated method stub
+    public QuestionAnswer getQaByUsername(int qaId, String username) {
+        Users user = userRepository.findByUsername(username);
         QuestionAnswer qa = qaRepository.findById(qaId);
-        if (qa.getUsers().getId() == userId) {
-            qaRepository.updateCount(0, qaId);
+        if (user != null) {
+            if (qa.getUsers().getId() == user.getId()) {
+                qaRepository.updateCount(0, qaId);
+            }
         }
         return qa;
     }
 
     @Override
-    public List<QuestionAnswer> getAnswerOfQuestion(int questionId, int userId) {
-        // TODO Auto-generated method stub
+    public List<QuestionAnswer> getAnswerOfQuestion(int questionId, String username) {
         List<QuestionAnswer> list = qaRepository.findByParentId(questionId, 2);
         Vote vote = new Vote();
         Report report = new Report();
-        for (int i = 0; i < list.size(); i++) {
-            vote = voteRepo.findByUserAndAnswer(userId, list.get(i).getId());
-            if (vote != null) {
-                list.get(i).setVoteByUser(true);
-            }
-            report = reportRepo.findByUserAndAnswer(userId, list.get(i).getId());
-            if (report != null) {
-                list.get(i).setReportByUser(true);
+        Users user = userRepository.findByUsername(username);
+        if (user != null) {
+            for (int i = 0; i < list.size(); i++) {
+                vote = voteRepo.findByUserAndAnswer(user.getId(), list.get(i).getId());
+                if (vote != null) {
+                    list.get(i).setVoteByUser(true);
+                }
+                report = reportRepo.findByUserAndAnswer(user.getId(), list.get(i).getId());
+                if (report != null) {
+                    list.get(i).setReportByUser(true);
+                }
             }
         }
         return list;
