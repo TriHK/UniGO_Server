@@ -14,66 +14,71 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.unistart.view.UniversityView;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "TrainSystem", schema = "dbo", catalog = "University")
 public class TrainSystem {
 
-	private Integer id;
-	private String name;
-	private boolean isActive;
-	private Set<University> university = new HashSet<University>(0);
-	
-	public TrainSystem() {
-		super();
-	}
+    @JsonView({UniversityView.LocationAndAddressIncluded.class})
+    private Integer id;
+    @JsonView({UniversityView.LocationAndAddressIncluded.class})
+    private String name;
+    @JsonView({UniversityView.LocationAndAddressIncluded.class})
+    private boolean isActive;
+    private Set<University> university = new HashSet<University>(0);
 
-	public TrainSystem(Integer id, String name, boolean isActive, Set<University> university) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.isActive = isActive;
-		this.university = university;
-	}
+    public TrainSystem() {
+        super();
+    }
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "Id", unique = true, nullable = false)
-	public Integer getId() {
-		return id;
-	}
+    public TrainSystem(Integer id, String name, boolean isActive, Set<University> university) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.isActive = isActive;
+        this.university = university;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id", unique = true, nullable = false)
+    public Integer getId() {
+        return id;
+    }
 
-	@Column(name = "Name", nullable = false, length = 10)
-	public String getName() {
-		return name;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Column(name = "Name", nullable = false, length = 10)
+    public String getName() {
+        return name;
+    }
 
-	@Column(name = "IsActive", nullable = false)
-	public boolean isActive() {
-		return isActive;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
+    @Column(name = "IsActive", nullable = false)
+    public boolean isActive() {
+        return isActive;
+    }
 
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "trainSystem")
-	public Set<University> getUniversity() {
-		return university;
-	}
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
 
-	public void setUniversity(Set<University> university) {
-		this.university = university;
-	}
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trainSystem")
+    public Set<University> getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(Set<University> university) {
+        this.university = university;
+    }
 
 }

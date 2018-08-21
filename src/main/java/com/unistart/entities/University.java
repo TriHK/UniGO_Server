@@ -29,30 +29,58 @@ import com.unistart.view.UniversityView;
 @Table(name = "University", schema = "dbo", catalog = "University")
 public class University implements java.io.Serializable {
 
-    @JsonView(UniversityView.Simple.class)
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private Integer id;
+
+    @JsonView({UniversityView.LocationAndAddressIncluded.class})
     private Location location;
+
+    @JsonView({UniversityView.LocationAndAddressIncluded.class})
     private TrainSystem trainSystem;
-    @JsonView(UniversityView.Simple.class)
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private String code;
-    @JsonView(UniversityView.Simple.class)
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private String name;
-    @JsonView(UniversityView.Simple.class)
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private String email;
-    @JsonView(UniversityView.Simple.class)
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private String phone;
-    @JsonView(UniversityView.Simple.class)
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private String logo;
-    @JsonView(UniversityView.Simple.class)
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private String description;
-    @JsonView(UniversityView.Simple.class)
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private String image;
-    @JsonView(UniversityView.Simple.class)
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
     private Integer priority;
+
     private Boolean isActive;
+
     private Set<Review> reviews = new HashSet<Review>(0);
+
     @JsonManagedReference
     private Set<MajorUniversity> majorUniversities = new HashSet<MajorUniversity>(0);
+
+    @JsonView({UniversityView.Simple.class,
+        UniversityView.LocationAndAddressIncluded.class})
+    private String address;
 
     public University(Integer id) {
         this.id = id;
@@ -256,6 +284,15 @@ public class University implements java.io.Serializable {
 
     public void setMajorUniversities(Set<MajorUniversity> majorUniversities) {
         this.majorUniversities = majorUniversities;
+    }
+
+    @Column(name = "UniAddress", nullable = true)
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 }

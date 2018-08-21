@@ -1,13 +1,6 @@
 package com.unistart.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.unistart.constant.ErrorConstant;
 import com.unistart.constant.UrlConstant;
@@ -31,7 +22,6 @@ import com.unistart.entities.University;
 import com.unistart.entities.customentities.LocationMajor;
 import com.unistart.entities.customentities.UniversitySearchEntity;
 import com.unistart.error.ErrorNotification;
-import com.unistart.services.MajorService;
 import com.unistart.services.interfaces.MajorServiceInterface;
 import com.unistart.services.interfaces.UniversityServiceInterface;
 import com.unistart.view.UniversityView;
@@ -78,7 +68,7 @@ public class UniversityController {
         return new ResponseEntity<ErrorNotification>(error, HttpStatus.CONFLICT);
     }
 
-    @JsonView(UniversityView.Simple.class)
+    @JsonView(UniversityView.LocationAndAddressIncluded.class)
     @RequestMapping(value = UrlConstant.SEARCH, method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<?> searchUniversity(@RequestBody UniversitySearchEntity searchEntity) {
