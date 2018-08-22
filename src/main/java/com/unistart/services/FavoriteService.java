@@ -12,58 +12,65 @@ import com.unistart.entities.Users;
 import com.unistart.repositories.MajorUniRepository;
 import com.unistart.repositories.UserRepository;
 import com.unistart.services.interfaces.FavoriteInterface;
-
+import java.util.LinkedList;
 
 @Service
 @Transactional
-public class FavoriteService implements FavoriteInterface{
+public class FavoriteService implements FavoriteInterface {
 
-	@Autowired
-	private FavoriteRepository favoriteRepo;
-	@Autowired
-	private UserRepository userRepo;
-	@Autowired
-	private MajorUniRepository majorUniRepo;
-	private Users user;
-	private MajorUniversity majorUni;
-	private Favorite favorite;
-	
-	@Override
-	public Favorite saveFavorite(int userId, int majorUniId) {
-		user = userRepo.findById(userId);
-		majorUni = majorUniRepo.findById(majorUniId);
-		
-		if(user != null && majorUni != null){
-			favorite = new Favorite();
-			favorite.setUser(user);
-			favorite.setMajorUni(majorUni);
-			favoriteRepo.save(favorite);
-			return favoriteRepo.save(favorite);
-		}
-		return null;
-	}
-  
-  @Override
-	public int checkFavorite(int userId, int majorUniId) {
-		favorite = favoriteRepo.findByUserAndMajorUniId(userId, majorUniId);
-		if (favorite != null) {
-			return favorite.getId();
-		}
-		return -1;
-  }
+    @Autowired
+    private FavoriteRepository favoriteRepo;
+    @Autowired
+    private UserRepository userRepo;
+    @Autowired
+    private MajorUniRepository majorUniRepo;
+    @Autowired
+    private UserRepository userRepository;
+    private Users user;
+    private MajorUniversity majorUni;
+    private Favorite favorite;
 
-  	@Override
-	public List<Favorite> listAllFavorite(int userId) {
-		return favoriteRepo.findMajorUniByUserId(userId);
-	}
- 	@Override
-	public boolean deleteFavorite(int id) {
-		
-		favorite = favoriteRepo.findById(id);
-		if(favorite != null) {
-			favoriteRepo.deleteFavorite(id);
-			return true;
-		}
-		return false;
-  }
+    @Override
+    public Favorite saveFavorite(int userId, int majorUniId) {
+        user = userRepo.findById(userId);
+        majorUni = majorUniRepo.findById(majorUniId);
+
+        if (user != null && majorUni != null) {
+            favorite = new Favorite();
+            favorite.setUser(user);
+            favorite.setMajorUni(majorUni);
+            favoriteRepo.save(favorite);
+            return favoriteRepo.save(favorite);
+        }
+        return null;
+    }
+
+    @Override
+    public int checkFavorite(int userId, int majorUniId) {
+        favorite = favoriteRepo.findByUserAndMajorUniId(userId, majorUniId);
+        if (favorite != null) {
+            return favorite.getId();
+        }
+        return -1;
+    }
+
+    @Override
+    public List<Favorite> listAllFavorite(String username) {
+        Users user = userRepository.findByUsername(username);
+        if (user != null) {
+            return favoriteRepo.findMajorUniByUserId(user.getId());
+        }
+        return new LinkedList<>();
+    }
+
+    @Override
+    public boolean deleteFavorite(int id) {
+
+        favorite = favoriteRepo.findById(id);
+        if (favorite != null) {
+            favoriteRepo.deleteFavorite(id);
+            return true;
+        }
+        return false;
+    }
 }

@@ -21,6 +21,8 @@ import com.unistart.error.ErrorNotification;
 import com.unistart.services.interfaces.QAInterface;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import static com.unistart.constant.AuthenticationConstants.ROLE_USER;
+import org.springframework.security.access.annotation.Secured;
 
 @RestController
 @RequestMapping(value = UrlConstant.QA)
@@ -43,6 +45,7 @@ public class QAController {
         return new ResponseEntity<String>("Save error", HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @Secured(ROLE_USER)
     @RequestMapping(value = UrlConstant.VIEW, method = RequestMethod.GET)
     public ResponseEntity<?> viewQuestion(@RequestParam(value = ParamConstant.QA_ID) int qaId,
             Authentication auth) {
@@ -61,6 +64,7 @@ public class QAController {
         return new ResponseEntity<List<QuestionAnswer>>(questions, HttpStatus.OK);
     }
 
+    @Secured(ROLE_USER)
     @RequestMapping(value = UrlConstant.QUESTIONS_BY_USER, method = RequestMethod.GET)
     public ResponseEntity<?> viewQuestionByUser(Authentication auth) {
         String username = ((UserDetails) auth.getPrincipal()).getUsername();
@@ -91,6 +95,7 @@ public class QAController {
         return new ResponseEntity<String>("Cannot update", HttpStatus.CONFLICT);
     }
 
+    @Secured(ROLE_USER)
     @RequestMapping(value = UrlConstant.ANSWER_BY_QUESTION, method = RequestMethod.GET)
     public ResponseEntity<?> viewAnswerOfQuestion(@RequestParam(value = ParamConstant.QA_ID) int qaId,
             Authentication auth) {

@@ -48,7 +48,7 @@ public class UserController {
         } else if (provider.equalsIgnoreCase(PROVIDER_FACEBOOK)) {
 
         }
-        if(authentication == null){
+        if (authentication == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
         authentication.setToken(token);
@@ -86,32 +86,4 @@ public class UserController {
         }
     }
 
-//	@RequestMapping(value = UrlConstant.CHECK_LOGIN, method = RequestMethod.POST)
-//	public ResponseEntity<?> checkLogin(@RequestBody Users u) {
-//		String username = u.getUsername();
-//		String password = u.getPassword();
-//		LoginUserInfo user = userService.checkLogin(username, password);
-//		if (user != null) {
-//			return new ResponseEntity<LoginUserInfo> (user, HttpStatus.OK);
-//		} else {
-//			error = new ErrorNotification(ErrorConstant.MES002);
-//			return new ResponseEntity<ErrorNotification> (error, HttpStatus.UNAUTHORIZED);
-//		}
-//	}
-//	
-//	@RequestMapping(value = UrlConstant.CHECK_LOGIN_3RD_PARTY, method = RequestMethod.POST)
-//	public ResponseEntity<?> checkLoginThirdParty(@RequestBody Authentication user) {
-//		String email = user.getEmail();
-//		String image = user.getImage();
-//		String name = user.getName();
-//		String providerId = user.getProviderId();
-//		String providerName = user.getProviderName();
-//		LoginUserInfo userInfo = null;
-//		
-//		boolean isSuccess = userService.checkLoginThirdParty(email, image, name, providerId, providerName);
-//		if (isSuccess) {
-//			userInfo = userService.get3rdPartyInfo(email);	
-//		}
-//		return new ResponseEntity<LoginUserInfo> (userInfo, HttpStatus.OK);
-//	}
 }

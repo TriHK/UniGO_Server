@@ -14,6 +14,8 @@ public class AuthenticationConstants {
     public final static String PROVIDER_FACEBOOK = "facebook";
     public final static String PROVIDER_GOOGLE = "google";
 
+    public final static String ROLE_USER = "ROLE_USER";
+    public final static String ROLE_ADMIN = "ROLE_ADMIN";
     private static String[] UNAUTHENTICATED_URL = {};
 
     static {
