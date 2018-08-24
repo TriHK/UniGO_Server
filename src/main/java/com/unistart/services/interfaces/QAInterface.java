@@ -12,7 +12,7 @@ public interface QAInterface {
 
     QuestionAnswer getQaByUsername(int qaId, String username);
 
-    List<QuestionAnswer> getAnswerOfQuestion(int questionId, String username);
+    List<QuestionAnswer> getAnswerOfQuestion(int questionId);
 
     List<QuestionAnswer> getAllQuestion();
 

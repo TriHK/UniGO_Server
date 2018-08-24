@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.unistart.constant.AuthenticationConstants.getUnauthenticatedUrls;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @Configuration
@@ -32,10 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().and().csrf().disable();
 //        http.csrf().ignoringAntMatchers("/**");
         //unauthenticated url
-        http.authorizeRequests().antMatchers(getUnauthenticatedUrls()).permitAll().and().logout().disable();
+        http.authorizeRequests().antMatchers(getUnauthenticatedUrls()).permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/**").authenticated()
+                .and().logout().disable();
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint())
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .and().addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
     }
 
@@ -50,9 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationTokenFilter jwtAuthenticationTokenFilter() throws Exception {
-        AuthenticationTokenFilter jwtAuthenticationTokenFilter = new AuthenticationTokenFilter();
-        jwtAuthenticationTokenFilter.setAuthenticationManager(authenticationManager());
-        return jwtAuthenticationTokenFilter;
+    public AuthenticationTokenFilter authenticationTokenFilter() throws Exception {
+        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter();
+        authenticationTokenFilter.setAuthenticationManager(authenticationManager());
+        return authenticationTokenFilter;
     }
 }

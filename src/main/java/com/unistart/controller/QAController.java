@@ -45,12 +45,15 @@ public class QAController {
         return new ResponseEntity<String>("Save error", HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @Secured(ROLE_USER)
     @RequestMapping(value = UrlConstant.VIEW, method = RequestMethod.GET)
     public ResponseEntity<?> viewQuestion(@RequestParam(value = ParamConstant.QA_ID) int qaId,
             Authentication auth) {
-        String username = ((UserDetails) auth.getPrincipal()).getUsername();
-        QuestionAnswer question = qaService.getQaByUsername(qaId, username);
+        QuestionAnswer question;
+        String username = null;
+        if (auth != null) {
+            username = ((UserDetails) auth.getPrincipal()).getUsername();
+        }
+        question = qaService.getQaByUsername(qaId, username);
         question.getUsers().setPassword("");
         return new ResponseEntity<QuestionAnswer>(question, HttpStatus.OK);
     }
@@ -64,7 +67,6 @@ public class QAController {
         return new ResponseEntity<List<QuestionAnswer>>(questions, HttpStatus.OK);
     }
 
-    @Secured(ROLE_USER)
     @RequestMapping(value = UrlConstant.QUESTIONS_BY_USER, method = RequestMethod.GET)
     public ResponseEntity<?> viewQuestionByUser(Authentication auth) {
         String username = ((UserDetails) auth.getPrincipal()).getUsername();
@@ -95,12 +97,9 @@ public class QAController {
         return new ResponseEntity<String>("Cannot update", HttpStatus.CONFLICT);
     }
 
-    @Secured(ROLE_USER)
     @RequestMapping(value = UrlConstant.ANSWER_BY_QUESTION, method = RequestMethod.GET)
-    public ResponseEntity<?> viewAnswerOfQuestion(@RequestParam(value = ParamConstant.QA_ID) int qaId,
-            Authentication auth) {
-        String username = ((UserDetails) auth.getPrincipal()).getUsername();
-        List<QuestionAnswer> answers = qaService.getAnswerOfQuestion(qaId, username);
+    public ResponseEntity<?> viewAnswerOfQuestion(@RequestParam(value = ParamConstant.QA_ID) int qaId) {
+        List<QuestionAnswer> answers = qaService.getAnswerOfQuestion(qaId);
         for (int i = 0; i < answers.size(); i++) {
             answers.get(i).getUsers().setPassword("");
         }

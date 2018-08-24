@@ -20,252 +20,233 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "QuestionAnswer", schema = "dbo", catalog = "University")
 public class QuestionAnswer implements java.io.Serializable {
-	private Integer id;
-	private String title;
-	private String content;
-	private Integer vote;
-	private Integer type;
-	private Integer count;
-	private Users users;
-	private Integer parentId;
-	private Boolean isActive;
-	private Boolean status;
-	private Integer numberOfReport;
-	private Date createdDateTime;
-	private Date lastUpdatedTime;
-	private boolean isVoteByUser;
-	private boolean isReportByUser;
-	private int totalAnswer;
-	private int[] tagUniversity = new int[0];
-	
-	@JsonManagedReference
-	private Set<QuestionTag> tags = new HashSet<QuestionTag>(0);
-	// private int[] otherTag;
 
-	public QuestionAnswer(Integer id, String title, String content, Integer vote, Integer type, Users users,
-			Integer parentId, Boolean isActive, Date createdDateTime, Date lastUpdatedTime) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.vote = vote;
-		this.type = type;
-		this.users = users;
-		this.parentId = parentId;
-		this.isActive = isActive;
-		this.createdDateTime = createdDateTime;
-		this.lastUpdatedTime = lastUpdatedTime;
-	}
+    private Integer id;
+    private String title;
+    private String content;
+    private Integer vote;
+    private Integer type;
+    private Integer count;
+    private Users users;
+    private Integer parentId;
+    private Boolean isActive;
+    private Boolean status;
+    private Integer numberOfReport;
+    private Date createdDateTime;
+    private Date lastUpdatedTime;
+    private int totalAnswer;
+    private int[] tagUniversity = new int[0];
 
-	public QuestionAnswer() {
-		super();
-	}
+    @JsonManagedReference
+    private Set<QuestionTag> tags = new HashSet<QuestionTag>(0);
+    // private int[] otherTag;
 
-	public QuestionAnswer(int count) {
-		this.count = count;
-	}
+    public QuestionAnswer(Integer id, String title, String content, Integer vote, Integer type, Users users,
+            Integer parentId, Boolean isActive, Date createdDateTime, Date lastUpdatedTime) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.vote = vote;
+        this.type = type;
+        this.users = users;
+        this.parentId = parentId;
+        this.isActive = isActive;
+        this.createdDateTime = createdDateTime;
+        this.lastUpdatedTime = lastUpdatedTime;
+    }
 
-	public QuestionAnswer(Integer id, String title, String content) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.content = content;
-	}
+    public QuestionAnswer() {
+        super();
+    }
 
-	public QuestionAnswer(Integer id, String title, Users users, Date lastUpdatedTime, Set<QuestionTag> tags) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.users = users;
-		this.lastUpdatedTime = lastUpdatedTime;
-		this.tags = tags;
-	}
+    public QuestionAnswer(int count) {
+        this.count = count;
+    }
 
-	public QuestionAnswer(Integer id, String content) {
-		super();
-		this.id = id;
-		this.content = content;
-	}
+    public QuestionAnswer(Integer id, String title, String content) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "Id", unique = true, nullable = false)
-	public Integer getId() {
-		return id;
-	}
+    public QuestionAnswer(Integer id, String title, Users users, Date lastUpdatedTime, Set<QuestionTag> tags) {
+        super();
+        this.id = id;
+        this.title = title;
+        this.users = users;
+        this.lastUpdatedTime = lastUpdatedTime;
+        this.tags = tags;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public QuestionAnswer(Integer id, String content) {
+        super();
+        this.id = id;
+        this.content = content;
+    }
 
-	@Column(name = "Title", nullable = true)
-	public String getTitle() {
-		return title;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id", unique = true, nullable = false)
+    public Integer getId() {
+        return id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "Contents", nullable = false)
-	public String getContent() {
-		return content;
-	}
+    @Column(name = "Title", nullable = true)
+    public String getTitle() {
+        return title;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	@Column(name = "Vote")
-	public Integer getVote() {
-		if (vote == null) {
-			setVote(0);
-		}
-		return vote;
-	}
+    @Column(name = "Contents", nullable = false)
+    public String getContent() {
+        return content;
+    }
 
-	public void setVote(Integer vote) {
-		this.vote = vote;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	@Column(name = "Count", nullable = false)
-	public Integer getCount() {
-		return count;
-	}
+    @Column(name = "Vote")
+    public Integer getVote() {
+        if (vote == null) {
+            setVote(0);
+        }
+        return vote;
+    }
 
-	public void setCount(Integer count) {
-		this.count = count;
-	}
+    public void setVote(Integer vote) {
+        this.vote = vote;
+    }
 
-	@Column(name = "Type", nullable = false)
-	public Integer getType() {
-		return type;
-	}
+    @Column(name = "Count", nullable = false)
+    public Integer getCount() {
+        return count;
+    }
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+    public void setCount(Integer count) {
+        this.count = count;
+    }
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "UserId")
-	public Users getUsers() {
-		return users;
-	}
+    @Column(name = "Type", nullable = false)
+    public Integer getType() {
+        return type;
+    }
 
-	public void setUsers(Users users) {
-		this.users = users;
-	}
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
-	@Column(name = "ParentId", nullable = false)
-	public Integer getParentId() {
-		return parentId;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "UserId")
+    public Users getUsers() {
+        return users;
+    }
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
-	}
+    public void setUsers(Users users) {
+        this.users = users;
+    }
 
-	@Column(name = "IsActive", nullable = false)
-	public Boolean getIsActive() {
-		return isActive;
-	}
+    @Column(name = "ParentId", nullable = false)
+    public Integer getParentId() {
+        return parentId;
+    }
 
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 
-	@Column(name = "Status")
-	public Boolean getStatus() {
-		return status;
-	}
+    @Column(name = "IsActive", nullable = false)
+    public Boolean getIsActive() {
+        return isActive;
+    }
 
-	public void setStatus(Boolean status) {
-		this.status = status;
-	}
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
-	@Column(name = "NumberOfReport")
-	public Integer getNumberOfReport() {
-		if (numberOfReport == null) {
-			setNumberOfReport(0);
-		}
-		return numberOfReport;
-	}
+    @Column(name = "Status")
+    public Boolean getStatus() {
+        return status;
+    }
 
-	public void setNumberOfReport(Integer numberOfReport) {
-		this.numberOfReport = numberOfReport;
-	}
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
-	// @Column(name = "numberOfReport", nullable = false)
-	// public Boolean getStatus() {
-	// return status;
-	// }
-	// public void setStatus(Boolean status) {
-	// this.status = status;
-	// }
-	@Column(name = "CreatedDateTime", nullable = false)
-	public Date getCreatedDateTime() {
-		return createdDateTime;
-	}
+    @Column(name = "NumberOfReport")
+    public Integer getNumberOfReport() {
+        if (numberOfReport == null) {
+            setNumberOfReport(0);
+        }
+        return numberOfReport;
+    }
 
-	public void setCreatedDateTime(Date createdDateTime) {
-		this.createdDateTime = createdDateTime;
-	}
+    public void setNumberOfReport(Integer numberOfReport) {
+        this.numberOfReport = numberOfReport;
+    }
 
-	@Column(name = "LastUpdatedTime")
-	public Date getLastUpdatedTime() {
-		return lastUpdatedTime;
-	}
+    // @Column(name = "numberOfReport", nullable = false)
+    // public Boolean getStatus() {
+    // return status;
+    // }
+    // public void setStatus(Boolean status) {
+    // this.status = status;
+    // }
+    @Column(name = "CreatedDateTime", nullable = false)
+    public Date getCreatedDateTime() {
+        return createdDateTime;
+    }
 
-	public void setLastUpdatedTime(Date lastUpdatedTime) {
-		this.lastUpdatedTime = lastUpdatedTime;
-	}
+    public void setCreatedDateTime(Date createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
 
-	@Transient
-	public int getTotalAnswer() {
-		return totalAnswer;
-	}
+    @Column(name = "LastUpdatedTime")
+    public Date getLastUpdatedTime() {
+        return lastUpdatedTime;
+    }
 
-	public void setTotalAnswer(int totalAnswer) {
-		this.totalAnswer = totalAnswer;
-	}
+    public void setLastUpdatedTime(Date lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
+    }
 
-	@Transient
-	public boolean isVoteByUser() {
-		return isVoteByUser;
-	}
+    @Transient
+    public int getTotalAnswer() {
+        return totalAnswer;
+    }
 
-	public void setVoteByUser(boolean isVoteByUser) {
-		this.isVoteByUser = isVoteByUser;
-	}
+    public void setTotalAnswer(int totalAnswer) {
+        this.totalAnswer = totalAnswer;
+    }
 
-	@Transient
-	public int[] getTagUniversity() {
-		return tagUniversity;
-	}
+    @Transient
+    public int[] getTagUniversity() {
+        return tagUniversity;
+    }
 
-	public void setTagUniversity(int[] tagUniversity) {
-		this.tagUniversity = tagUniversity;
-	}
+    public void setTagUniversity(int[] tagUniversity) {
+        this.tagUniversity = tagUniversity;
+    }
 
-	@Transient
-	public boolean isReportByUser() {
-		return isReportByUser;
-	}
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "qa")
+    public Set<QuestionTag> getTags() {
+        return tags;
+    }
 
-	public void setReportByUser(boolean isReportByUser) {
-		this.isReportByUser = isReportByUser;
-	}
-
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "qa")
-	public Set<QuestionTag> getTags() {
-		return tags;
-	}
-
-	public void setTags(Set<QuestionTag> tags) {
-		this.tags = tags;
-	}
+    public void setTags(Set<QuestionTag> tags) {
+        this.tags = tags;
+    }
 
 }
