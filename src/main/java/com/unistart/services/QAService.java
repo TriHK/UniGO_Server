@@ -48,10 +48,11 @@ public class QAService implements QAInterface {
     private ReportRespository reportRepo;
 
     @Override
-    public Integer saveQa(String title, String contents, int type, int parentId, int userId, int[] tags) {
+    public Integer saveQa(String title, String contents, int type, int parentId, String username, int[] tags) {
         // TODO Auto-generated method stub
         QuestionAnswer qa = new QuestionAnswer();
         Calendar cal = Calendar.getInstance();
+        Users user = userRepository.findByUsername(username);
         if (type == 1) {
             if (title != "") {
                 qa.setTitle(title);
@@ -60,7 +61,7 @@ public class QAService implements QAInterface {
                 qa.setCount(0);
                 qa.setIsActive(true);
                 qa.setType(type);
-                qa.setUsers(userService.getUserById(userId));
+                qa.setUsers(userService.getUserById(user.getId()));
                 qa.setCreatedDateTime(cal.getTime());
                 qa.setLastUpdatedTime(cal.getTime());
                 qa.setStatus(false);
@@ -73,7 +74,7 @@ public class QAService implements QAInterface {
             return 0;
         } else if (type == 2) {
             QuestionAnswer ques = qaRepository.findById(parentId);
-            if (ques.getUsers().getId() != userId) {
+            if (ques.getUsers().getId() != user.getId()) {
                 int count = qaRepository.getCountByQaId(parentId).getCount() + 1;
                 qaRepository.updateCount(count, parentId);
             }
@@ -83,7 +84,7 @@ public class QAService implements QAInterface {
             qa.setParentId(parentId);
             qa.setIsActive(true);
             qa.setType(type);
-            qa.setUsers(userService.getUserById(userId));
+            qa.setUsers(userService.getUserById(user.getId()));
             qa.setCreatedDateTime(cal.getTime());
             qa.setLastUpdatedTime(cal.getTime());
             qa.setStatus(true);

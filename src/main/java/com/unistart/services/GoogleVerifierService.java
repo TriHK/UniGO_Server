@@ -41,7 +41,7 @@ public class GoogleVerifierService {
         return null;
     }
 
-    public Users findUserByGoogleToken(String token) throws GeneralSecurityException, IOException {
+    public Users findUserByGoogleToken(String token) {
         GoogleIdToken.Payload payload = verify(token);
         if (payload != null) {
             String email = payload.getEmail();
@@ -65,21 +65,25 @@ public class GoogleVerifierService {
         return null;
     }
 
-    public GoogleIdToken.Payload verify(String idTokenString) throws GeneralSecurityException, IOException {
-        if (idTokenString != null) {
-            HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
-            JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                    // Specify the CLIENT_ID of the app that accesses the backend:
-                    .setAudience(Collections.singletonList(AuthenticationConstants.G_CLIENT_ID))
-                    // Or, if multiple clients access the backend:
-                    //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-                    .build();
-            // (Receive idTokenString by HTTPS POST)
-            GoogleIdToken idToken = verifier.verify(idTokenString);
-            if (idToken != null) {
-                return idToken.getPayload();
+    public GoogleIdToken.Payload verify(String idTokenString) {
+        try {
+            if (idTokenString != null) {
+                HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+                JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+                GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                        // Specify the CLIENT_ID of the app that accesses the backend:
+                        .setAudience(Collections.singletonList(AuthenticationConstants.G_CLIENT_ID))
+                        // Or, if multiple clients access the backend:
+                        //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+                        .build();
+                // (Receive idTokenString by HTTPS POST)
+                GoogleIdToken idToken = verifier.verify(idTokenString);
+                if (idToken != null) {
+                    return idToken.getPayload();
+                }
             }
+        } catch (Exception ex) {
+            System.out.println("Invalid google token: " + idTokenString);
         }
         return null;
     }

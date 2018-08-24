@@ -32,7 +32,6 @@ public class AuthenticationController {
             String password = authentication.getPassword();
             Authentication auth = userService.checkLogin(username, password);
             if (auth != null) {
-                auth.setToken(authentication.getToken());
                 return new ResponseEntity<Authentication>(auth, HttpStatus.OK);
             } else {
                 ErrorNotification error = new ErrorNotification(ErrorConstant.MES002);

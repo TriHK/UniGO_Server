@@ -21,8 +21,6 @@ import com.unistart.error.ErrorNotification;
 import com.unistart.services.interfaces.QAInterface;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import static com.unistart.constant.AuthenticationConstants.ROLE_USER;
-import org.springframework.security.access.annotation.Secured;
 
 @RestController
 @RequestMapping(value = UrlConstant.QA)
@@ -32,13 +30,13 @@ public class QAController {
     private QAInterface qaService;
 
     @RequestMapping(value = UrlConstant.SAVE, method = RequestMethod.POST)
-    public ResponseEntity<?> saveQa(@RequestBody QuestionAnswer qa) {
+    public ResponseEntity<?> saveQa(@RequestBody QuestionAnswer qa, Authentication auth) {
         String title = qa.getTitle();
         String contents = qa.getContent();
         int type = qa.getType();
         int parentId = qa.getParentId();
-        int userId = qa.getUsers().getId();
-        int isqaId = qaService.saveQa(title, contents, type, parentId, userId, qa.getTagUniversity());
+        String username = ((UserDetails) auth.getPrincipal()).getUsername();
+        int isqaId = qaService.saveQa(title, contents, type, parentId, username, qa.getTagUniversity());
         if (isqaId != 0) {
             return new ResponseEntity<Integer>(isqaId, HttpStatus.OK);
         }

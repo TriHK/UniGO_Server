@@ -21,5 +21,5 @@ public interface ReviewServiceInterface {
 	
 	int numberOfReview();
 	
-	boolean checkReviewedUni(int unversityId, int userId);
+	boolean checkReviewedUni(int unversityId, String username);
 }

@@ -18,7 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import static com.unistart.constant.AuthenticationConstants.PROVIDER_GOOGLE;
 import static com.unistart.constant.AuthenticationConstants.PROVIDER_FACEBOOK;
+import java.nio.file.AccessDeniedException;
 import java.security.GeneralSecurityException;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.security.core.AuthenticationException;
 
 public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -62,7 +65,6 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-
         chain.doFilter(request, response);
     }
 

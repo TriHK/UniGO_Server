@@ -41,7 +41,6 @@
     "/article/update",
     "/article/get-newest-article",
     "/article/get-tag-article",
-    "/qa/save",
     "/qa/questions",
     "/qa/view",
     "/qa/answer-by-question",
